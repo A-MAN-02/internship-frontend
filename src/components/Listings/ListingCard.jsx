@@ -2,12 +2,19 @@ import { HiCheckCircle, HiLocationMarker } from "react-icons/hi";
 import { FiCalendar } from "react-icons/fi";
 import { useNavigate } from "react-router-dom";
 
+const BASE_URL = "https://internship-backend-osou.onrender.com";
+
 const ListingCard = ({ listing }) => {
   const navigate = useNavigate();
 
   const handleViewDetails = () => {
-    navigate(`/listing/${listing.id}`);
+    navigate(`/listing/${listing._id}`);
   };
+
+  // ✅ FIXED IMAGE URL
+  const imageUrl = listing.image
+    ? `${BASE_URL}${listing.image}`
+    : "/placeholder.png";
 
   return (
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition p-3 w-[280px]">
@@ -15,7 +22,7 @@ const ListingCard = ({ listing }) => {
       {/* IMAGE */}
       <div className="relative rounded-lg overflow-hidden mb-3">
         <img
-          src={listing.image}
+          src={imageUrl}
           alt={listing.title}
           className="w-full h-44 object-cover"
         />
@@ -45,7 +52,7 @@ const ListingCard = ({ listing }) => {
 
       {/* TIME */}
       <p className="flex items-center gap-1 text-sm text-gray-500 mb-2">
-        <FiCalendar /> {listing.posted}
+        <FiCalendar /> {listing.createdAt?.slice(0, 10)}
       </p>
 
       {/* DETAILS */}

@@ -3,12 +3,12 @@
 const authHeader = () => {
   const token = localStorage.getItem("token");
 
-  // ❌ No token → no auth header
+  // ❌ Token nahi hai → header mat bhejo
   if (!token) {
     return {};
   }
 
-  // ✅ Correct Authorization format
+  // ✅ Backend expects: Authorization: Bearer <token>
   return {
     Authorization: `Bearer ${token}`,
   };
