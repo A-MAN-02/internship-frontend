@@ -264,7 +264,9 @@ const VendorDashboard = () => {
       {/* IMAGE */}
       {l.image && (
         <img
-          src={`http://localhost:5000${l.image}`}
+          // src={`http://localhost:5000${l.image}`}
+          src={`${import.meta.env.VITE_API_URL}${image}`}
+
           alt={l.title}
           className="w-24 h-24 object-cover rounded"
         />
@@ -312,7 +314,9 @@ const VendorDashboard = () => {
             <div key={p._id} className="border p-4 rounded flex gap-4">
               {p.image && (
                 <img
-                  src={`http://localhost:5000${p.image}`}
+                  // src={`http://localhost:5000${p.image}`}
+                  
+          src={`${import.meta.env.VITE_API_URL}${image}`}
                   className="w-20 h-20 object-cover"
                 />
               )}
