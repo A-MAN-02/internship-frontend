@@ -1,5 +1,7 @@
 import { HiOutlineShoppingBag } from "react-icons/hi";
 
+const BASE_URL = "https://internship-backend-osou.onrender.com";
+
 const ProductCard = ({ product }) => {
   const addToCart = () => {
     const cart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -17,7 +19,7 @@ const ProductCard = ({ product }) => {
         price: Number(product.price),
         vendor: product.vendor, // 🔥 VERY IMPORTANT
         image: product.image
-          ? `http://localhost:5000${product.image}`
+          ? `${BASE_URL}${product.image}`
           : "/placeholder.png",
         qty: 1,
       });
@@ -28,14 +30,14 @@ const ProductCard = ({ product }) => {
     alert("Product added to cart");
   };
 
+  const imageUrl = product.image
+    ? `${BASE_URL}${product.image}`
+    : "/placeholder.png";
+
   return (
     <div className="bg-white rounded-2xl border p-4 flex flex-col hover:border-orange-400 hover:shadow-lg transition">
       <img
-        src={
-          product.image
-            ? `http://localhost:5000${product.image}`
-            : "/placeholder.png"
-        }
+        src={imageUrl}
         alt={product.name}
         className="w-full h-48 object-cover rounded mb-3"
       />
