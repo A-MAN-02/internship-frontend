@@ -1,10 +1,16 @@
+// src/api/authHeader.js
+
 const authHeader = () => {
   const token = localStorage.getItem("token");
 
-  if (!token) return {};
+  // ❌ No token → no auth header
+  if (!token) {
+    return {};
+  }
 
+  // ✅ Correct Authorization format
   return {
-    Authorization: `Bearer ${token}`, // 🔥 Capital A + Bearer
+    Authorization: `Bearer ${token}`,
   };
 };
 
