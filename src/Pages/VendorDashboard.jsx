@@ -251,60 +251,60 @@ const VendorDashboard = () => {
         </Section>
 
         {/* MY LISTINGS */}
-<h3 className="text-xl font-semibold mb-4">
-  My Animal Listings
-</h3>
+        <h3 className="text-xl font-semibold mb-4">
+          My Animal Listings
+        </h3>
 
-<div className="grid md:grid-cols-2 gap-4 mb-10">
-  {listings.map((l) => (
-    <div
-      key={l._id}
-      className="border p-4 rounded flex gap-4"
-    >
-      {/* IMAGE */}
-      {l.image && (
-        <img
-          // src={`http://localhost:5000${l.image}`}
-          src={`${import.meta.env.VITE_API_URL}${image}`}
+        <div className="grid md:grid-cols-2 gap-4 mb-10">
+          {listings.map((l) => (
+            <div
+              key={l._id}
+              className="border p-4 rounded flex gap-4"
+            >
 
-          alt={l.title}
-          className="w-24 h-24 object-cover rounded"
-        />
-      )}
+              /* IMAGE - LISTINGS */
+              {l.image && (
+                <img
+                  src={`${import.meta.env.VITE_API_URL}${l.image}`}
+                  alt={l.title}
+                  className="w-24 h-24 object-cover rounded"
+                />
+              )}
 
-      {/* DETAILS */}
-      <div className="flex-1">
-        <h4 className="font-semibold">{l.title}</h4>
 
-        <p className="text-sm">
-          {l.type} • {l.age} yrs
-        </p>
+              {/* DETAILS */}
+              <div className="flex-1">
+                <h4 className="font-semibold">{l.title}</h4>
 
-        <p className="text-sm">{l.location}</p>
+                <p className="text-sm">
+                  {l.type} • {l.age} yrs
+                </p>
 
-        <p className="text-green-600 font-bold">
-          ₹{l.price}
-        </p>
+                <p className="text-sm">{l.location}</p>
 
-        <div className="flex gap-2 mt-2">
-          <button
-            onClick={() => setEditListing(l)}
-            className="btn-blue"
-          >
-            Edit
-          </button>
+                <p className="text-green-600 font-bold">
+                  ₹{l.price}
+                </p>
 
-          <button
-            onClick={() => deleteListing(l._id)}
-            className="btn-red"
-          >
-            Delete
-          </button>
+                <div className="flex gap-2 mt-2">
+                  <button
+                    onClick={() => setEditListing(l)}
+                    className="btn-blue"
+                  >
+                    Edit
+                  </button>
+
+                  <button
+                    onClick={() => deleteListing(l._id)}
+                    className="btn-red"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </div>
-    </div>
-  ))}
-</div>
 
         {/* MY PRODUCTS */}
         <h3 className="text-xl font-semibold mb-4">My Products</h3>
@@ -312,14 +312,14 @@ const VendorDashboard = () => {
         <div className="grid md:grid-cols-2 gap-4">
           {products.map((p) => (
             <div key={p._id} className="border p-4 rounded flex gap-4">
+             /* IMAGE - PRODUCTS */
               {p.image && (
                 <img
-                  // src={`http://localhost:5000${p.image}`}
-                  
-          src={`${import.meta.env.VITE_API_URL}${image}`}
+                  src={`${import.meta.env.VITE_API_URL}${p.image}`}
                   className="w-20 h-20 object-cover"
                 />
               )}
+
               <div>
                 <h4 className="font-semibold">{p.name}</h4>
                 <p>Stock: {p.stock}</p>
