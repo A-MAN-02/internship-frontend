@@ -70,7 +70,7 @@ const Navbar = () => {
     { name: "Home", path: "/" },
     { name: "Shop", path: "/shop" },
     { name: "Listing", path: "/listing" },
-    { name: "Doctor", path: "/doctor" },
+    { name: "Doctor", path: "/Doctor" },
     { name: "Veterinary", path: "/veterinary" },
   ];
 

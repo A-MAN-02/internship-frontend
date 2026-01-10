@@ -13,7 +13,7 @@ import ResetPassword from "./Pages/ResetPassword";
 import MyOrders from "./Pages/MyOrders";
 import TrackOrder from "./Pages/TrackOrder";
 import VendorAddListing from "./Pages/VendorAddListing";
-
+import Doctor from "./pages/Doctor";
 /* ===== SHOP / PRODUCTS ===== */
 // import Products from "./products"; // 🔥 यही तुम्हारा SHOP page है
 import Shop from "./Pages/Shop";
@@ -47,8 +47,10 @@ const App = () => {
         <Route path="/order-success" element={<OrderSuccess />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/vendor-listing" element={<VendorAddListing />}
-/>
+        <Route path="/vendor-listing" element={<VendorAddListing />}/>
+        <Route path="/doctor" element={<Doctor />} />
+
+        
         {/* ===== SHOP ===== */}
         {/* <Route path="/shop" element={<Products />} /> ✅ FIX */}
         <Route path="/shop" element={<Shop />} />
