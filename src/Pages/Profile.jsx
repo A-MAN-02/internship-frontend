@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Common/Header";
 import Footer from "../components/Common/Footer";
-import api from "../api/axios"; // 🔥 IMPORTANT
+import api from "../api/axios"; // 🔥 EXISTING (UNCHANGED)
 import {
   FaUserEdit,
   FaPhone,
@@ -10,6 +10,12 @@ import {
   FaUserTag,
   FaStore,
 } from "react-icons/fa";
+
+/* 🔥 ONLY ADDITION (BUG FIX) */
+import {
+  getProfile,
+  updateProfile as updateProfileApi,
+} from "../api/auth/profile";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -34,13 +40,16 @@ const Profile = () => {
       return;
     }
 
-    const getProfile = async () => {
+    const loadProfile = async () => {
       try {
+        /* ❌ OLD (BUGGY)
         const res = await api.get("/auth/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
+        */
+
+        /* ✅ NEW (FIXED – SINGLE SOURCE) */
+        const res = await getProfile();
 
         setUser(res.data);
         setForm({
@@ -53,23 +62,22 @@ const Profile = () => {
       }
     };
 
-    getProfile();
+    loadProfile();
   }, [navigate]);
 
   /* ================= UPDATE PROFILE ================= */
   const updateProfile = async () => {
     try {
-      const token = localStorage.getItem("token");
-
+      /* ❌ OLD
       const res = await api.put(
         "/auth/profile",
         form,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+      */
+
+      /* ✅ NEW */
+      const res = await updateProfileApi(form);
 
       setUser(res.data);
       setEditOpen(false);
@@ -108,7 +116,11 @@ const Profile = () => {
           <div className="space-y-4 text-sm">
             <ProfileRow icon={<FaUserEdit />} label="Name" value={user.name} />
             <ProfileRow icon={<FaEnvelope />} label="Email" value={user.email} />
-            <ProfileRow icon={<FaPhone />} label="Phone" value={user.phone || "Not added"} />
+            <ProfileRow
+              icon={<FaPhone />}
+              label="Phone"
+              value={user.phone || "Not added"}
+            />
             <ProfileRow icon={<FaUserTag />} label="Role" value={user.role} />
           </div>
 
@@ -163,14 +175,18 @@ const Profile = () => {
                 className="w-full border px-3 py-2 rounded mb-3"
                 placeholder="Name"
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, name: e.target.value })
+                }
               />
 
               <input
                 className="w-full border px-3 py-2 rounded mb-4"
                 placeholder="Phone"
                 value={form.phone}
-                onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                onChange={(e) =>
+                  setForm({ ...form, phone: e.target.value })
+                }
               />
 
               <div className="flex justify-end gap-3">
