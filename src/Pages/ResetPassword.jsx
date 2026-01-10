@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import api from "../api/axios"; // ✅ ADD (ONLY NEW LINE)
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -32,28 +33,17 @@ const ResetPassword = () => {
     setError("");
 
     try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch("/api/auth/reset-password", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          oldPassword: form.oldPassword,
-          newPassword: form.newPassword,
-        }),
+      // 🔥 ONLY FIX (fetch ➜ axios)
+      await api.post("/auth/reset-password", {
+        oldPassword: form.oldPassword,
+        newPassword: form.newPassword,
       });
-
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
 
       alert("Password updated. Please login again.");
       localStorage.clear();
       navigate("/login");
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || "Password update failed");
     } finally {
       setLoading(false);
     }

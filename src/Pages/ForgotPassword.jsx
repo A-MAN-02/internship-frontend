@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import api from "../api/axios"; // ✅ ADD (ONLY NEW LINE)
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -19,18 +20,13 @@ const ForgotPassword = () => {
 
     try {
       setLoading(true);
-      const res = await fetch("/api/forgot-password", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Something went wrong");
+      // 🔥 ONLY FIX (fetch ➜ axios)
+      await api.post("/auth/forgot-password", { email });
 
       setMessage("Password reset link sent to your email 📧");
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);
     }
