@@ -1,27 +1,36 @@
 import axios from "axios";
 
-/* 🔥 DEBUG (production me bhi console me dikhega) */
+/* ================= ENV DEBUG ================= */
 const BASE_URL = import.meta.env.VITE_API_URL;
 
-console.log("VITE_API_URL =", BASE_URL);
+console.log("✅ VITE_API_URL =", BASE_URL);
 
-/* 🔥 SAFETY FALLBACK */
+/* ================= AXIOS INSTANCE ================= */
 const api = axios.create({
-  baseURL: BASE_URL
-    ? `${BASE_URL}/api`
-    : "https://internship-backend-osou.onrender.com/api",
-  withCredentials: true,
+  baseURL: BASE_URL, // 🔥 ONLY backend base URL
   headers: {
     "Content-Type": "application/json",
   },
 });
 
-/* 🔥 OPTIONAL: response error log (debug ke liye) */
+/* ================= TOKEN AUTO ATTACH ================= */
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+/* ================= RESPONSE ERROR DEBUG ================= */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error(
-      "API ERROR:",
+      "❌ API ERROR:",
       error.response?.status,
       error.response?.data || error.message
     );

@@ -1,14 +1,11 @@
 import api from "../axios";
-import authHeader from "../authHeader";
 
+/* ================= GET PROFILE ================= */
 export const getProfile = () => {
-  return api.get("/auth/profile", {
-    headers: authHeader(),
-  });
+  return api.get("/api/auth/profile");
 };
 
+/* ================= UPDATE PROFILE ================= */
 export const updateProfile = (data) => {
-  return api.put("/auth/profile", data, {
-    headers: authHeader(),
-  });
+  return api.put("/api/auth/profile", data);
 };
