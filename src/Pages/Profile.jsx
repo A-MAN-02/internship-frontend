@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "../components/Common/Header";
 import Footer from "../components/Common/Footer";
+import api from "../api/axios"; // 🔥 IMPORTANT
 import {
   FaUserEdit,
   FaPhone,
@@ -33,18 +34,26 @@ const Profile = () => {
       return;
     }
 
-    fetch("/api/auth/profile", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setUser(data);
-        setForm({
-          name: data.name || "",
-          phone: data.phone || "",
+    const getProfile = async () => {
+      try {
+        const res = await api.get("/auth/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
-      })
-      .catch(() => navigate("/login"));
+
+        setUser(res.data);
+        setForm({
+          name: res.data.name || "",
+          phone: res.data.phone || "",
+        });
+      } catch (err) {
+        console.error(err);
+        navigate("/login");
+      }
+    };
+
+    getProfile();
   }, [navigate]);
 
   /* ================= UPDATE PROFILE ================= */
@@ -52,19 +61,20 @@ const Profile = () => {
     try {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("/api/auth/profile", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(form),
-      });
+      const res = await api.put(
+        "/auth/profile",
+        form,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-      const data = await res.json();
-      setUser(data);
+      setUser(res.data);
       setEditOpen(false);
-    } catch {
+    } catch (err) {
+      console.error(err);
       alert("Profile update failed");
     }
   };
@@ -104,7 +114,6 @@ const Profile = () => {
 
           {/* ACTIONS */}
           <div className="mt-6 space-y-3">
-            {/* VENDOR DASHBOARD */}
             {user.role === "vendor" && (
               <button
                 onClick={() => navigate("/vendor-dashboard")}
