@@ -1,12 +1,8 @@
 import axios from "axios";
 
-/* ================= ENV DEBUG ================= */
-const BASE_URL = import.meta.env.VITE_API_URL;
-console.log("✅ VITE_API_URL =", BASE_URL);
-
 /* ================= AXIOS INSTANCE ================= */
 const api = axios.create({
-  baseURL: `${BASE_URL}/api`, // ✅ CORRECT
+  baseURL: "/api", // 🔥 ONLY THIS (vercel.json handle karega)
   headers: {
     "Content-Type": "application/json",
   },
@@ -24,7 +20,7 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-/* ================= RESPONSE ERROR DEBUG ================= */
+/* ================= RESPONSE DEBUG ================= */
 api.interceptors.response.use(
   (response) => response,
   (error) => {
