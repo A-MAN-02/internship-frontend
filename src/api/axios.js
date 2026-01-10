@@ -1,8 +1,10 @@
 import axios from "axios";
 
 /* ================= AXIOS INSTANCE ================= */
+/* 🔥 Frontend ONLY talks to /api */
+/* 🔥 Vercel rewrite backend handle karega */
 const api = axios.create({
-  baseURL: "/api", // 🔥 ONLY THIS (vercel.json handle karega)
+  baseURL: "/api",
   headers: {
     "Content-Type": "application/json",
   },
