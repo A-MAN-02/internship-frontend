@@ -11,7 +11,7 @@ import {
   FaStore,
 } from "react-icons/fa";
 
-/* 🔥 ONLY ADDITION (BUG FIX) */
+/* 🔥 ONLY ADDITION (BUG FIX – API SINGLE SOURCE) */
 import {
   getProfile,
   updateProfile as updateProfileApi,
@@ -21,6 +21,7 @@ const Profile = () => {
   const navigate = useNavigate();
 
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); // 🔥 ADD
   const [editOpen, setEditOpen] = useState(false);
   const [form, setForm] = useState({ name: "", phone: "" });
 
@@ -29,12 +30,13 @@ const Profile = () => {
     const token = localStorage.getItem("token");
     const role = localStorage.getItem("role");
 
+    // 🔴 NO TOKEN → LOGIN
     if (!token) {
       navigate("/login");
       return;
     }
 
-    // 🔥 ADMIN SHOULD NOT SEE PROFILE PAGE
+    // 🔴 ADMIN SHOULD NOT SEE PROFILE
     if (role === "admin") {
       navigate("/admin");
       return;
@@ -42,13 +44,6 @@ const Profile = () => {
 
     const loadProfile = async () => {
       try {
-        /* ❌ OLD (BUGGY)
-        const res = await api.get("/auth/profile", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        */
-
-        /* ✅ NEW (FIXED – SINGLE SOURCE) */
         const res = await getProfile();
 
         setUser(res.data);
@@ -58,7 +53,14 @@ const Profile = () => {
         });
       } catch (err) {
         console.error(err);
-        navigate("/login");
+
+        // 🔥 IMPORTANT FIX: ONLY logout on 401
+        if (err.response?.status === 401) {
+          localStorage.clear();
+          navigate("/login");
+        }
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -68,17 +70,7 @@ const Profile = () => {
   /* ================= UPDATE PROFILE ================= */
   const updateProfile = async () => {
     try {
-      /* ❌ OLD
-      const res = await api.put(
-        "/auth/profile",
-        form,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-      */
-
-      /* ✅ NEW */
       const res = await updateProfileApi(form);
-
       setUser(res.data);
       setEditOpen(false);
     } catch (err) {
@@ -92,6 +84,19 @@ const Profile = () => {
     localStorage.clear();
     navigate("/login");
   };
+
+  /* ================= LOADING STATE ================= */
+  if (loading) {
+    return (
+      <>
+        <Header />
+        <div className="min-h-screen flex items-center justify-center">
+          Loading profile...
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   if (!user) return null;
 
