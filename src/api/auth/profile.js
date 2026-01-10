@@ -2,10 +2,10 @@ import api from "../axios";
 
 /* ================= GET PROFILE ================= */
 export const getProfile = () => {
-  return api.get("/api/auth/profile");
+  return api.get("/auth/profile");
 };
 
 /* ================= UPDATE PROFILE ================= */
 export const updateProfile = (data) => {
-  return api.put("/api/auth/profile", data);
+  return api.put("/auth/profile", data);
 };
